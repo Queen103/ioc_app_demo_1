@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                     User? user = await login().loginWithGmailAccount();
                     List<String> listUser =
                         await login().getDataFromFirestore();
-                    if (!listUser.contains(user?.uid)) {
+                    if (listUser.contains(user?.uid)) {
                       await _user.add({
                         "userid": user?.uid,
                         "isblock": false,
