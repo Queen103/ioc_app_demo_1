@@ -9,7 +9,7 @@ class AuthProvider with ChangeNotifier {
   String? _password;
   String? _gmail;
   String? _phonenumber;
-  int? _userid;
+  String? _userid;
   String? _fullname;
   String? _birth;
   String? _room;
@@ -20,7 +20,7 @@ class AuthProvider with ChangeNotifier {
   String? get password => _password;
   String? get gmail => _gmail;
   String? get phonenumber => _phonenumber;
-  int? get userid => _userid;
+  String? get userid => _userid;
   String? get fullname => _fullname;
   String? get birth => _birth;
   String? get room => _room;
@@ -28,7 +28,7 @@ class AuthProvider with ChangeNotifier {
   int? get admin => _admin;
 
   void setCredentials(
-      int userid,
+      String userid,
       String username,
       String fullname,
       String gmail,
