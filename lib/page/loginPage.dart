@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ioc_app_demo_1/db/login.dart';
+import 'package:ioc_app_demo_1/page/signupGmailPage.dart';
 import 'package:ioc_app_demo_1/page/signupPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -163,6 +164,13 @@ class _LoginPageState extends State<LoginPage> {
                         "fullname": user?.displayName,
                         "phonenumber": user?.phoneNumber
                       });
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpGmail(),
+                        ),
+                      );
                     }
                     if (user != null) {
                       print(user);
