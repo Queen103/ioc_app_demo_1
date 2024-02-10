@@ -68,7 +68,7 @@ class login {
     }
   }
 
-  Future<List<String>> getDataFromFirestore() async {
+  Future<List<String>> getDataFromFirestoreByUserID() async {
     try {
       // Thực hiện truy vấn để lấy danh sách giá trị từ một trường cụ thể
       QuerySnapshot querySnapshot =

@@ -152,18 +152,8 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () async {
                     User? user = await login().loginWithGmailAccount();
                     List<String> listUser =
-                        await login().getDataFromFirestore();
+                        await login().getDataFromFirestoreByUserID();
                     if (listUser.contains(user?.uid)) {
-                      await _user.add({
-                        "userid": user?.uid,
-                        "isblock": false,
-                        "ismanager": false,
-                        "gmail": user?.email,
-                        "room": "0000",
-                        "birth": null,
-                        "fullname": user?.displayName,
-                        "phonenumber": user?.phoneNumber
-                      });
                     } else {
                       Navigator.push(
                         context,
