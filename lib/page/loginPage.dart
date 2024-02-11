@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print, file_names, unused_local_variable, duplicate_ignore, unnecessary_brace_in_string_interps, use_build_context_synchronously, prefer_const_constructors
+// ignore_for_file: avoid_print, file_names, unused_local_variable, duplicate_ignore, unnecessary_brace_in_string_interps, use_build_context_synchronously, prefer_const_constructors, unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ioc_app_demo_1/db/login.dart';
+import 'package:ioc_app_demo_1/db/user.dart';
 import 'package:ioc_app_demo_1/page/signupGmailPage.dart';
 import 'package:ioc_app_demo_1/page/signupPage.dart';
 
@@ -132,8 +133,12 @@ class _LoginPageState extends State<LoginPage> {
                     // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
                     User? user = await login()
                         .signInWithEmailAndPassword(context, email, password);
+                    print(user!.uid);
+                    Map<String, dynamic>? userData =
+                        await getUserById(user.uid);
+                    print(userData?['gmail']);
                     if (user != null) {
-                      print('Đã đăng nhập với :${user}');
+                      print('Đã đăng nhập');
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
