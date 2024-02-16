@@ -7,6 +7,8 @@ import 'package:ioc_app_demo_1/db/login.dart';
 import 'package:ioc_app_demo_1/db/user.dart';
 import 'package:ioc_app_demo_1/page/signupGmailPage.dart';
 import 'package:ioc_app_demo_1/page/signupPage.dart';
+import 'package:provider/provider.dart';
+import 'package:ioc_app_demo_1/model/auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -136,17 +138,23 @@ class _LoginPageState extends State<LoginPage> {
                     print(user!.uid);
                     Map<String, dynamic>? userData =
                         await getUserById(user.uid);
-                    print(userData?['gmail']);
-                    if (user != null) {
-                      print('Đã đăng nhập');
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => Home(data: user.uid),
-                      //     // builder: (context) => MyTest(),
-                      //   ),
-                      // );
-                    }
+                    context.read<Auth_Provider>().setCredentials(
+                        userData?['userid'],
+                        userData?['fullname'],
+                        userData?['gmail'],
+                        userData?['birth'],
+                        userData?['phonenumber'],
+                        userData?['room'],
+                        userData?['isblock'],
+                        userData?['ismanager']);
+                    // print(context.read<Auth_Provider>().userid);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => Home(data: user.uid),
+                    //     // builder: (context) => MyTest(),
+                    //   ),
+                    // );
                   },
                   child: const Text(
                     'Login',
