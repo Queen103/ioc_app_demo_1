@@ -1,10 +1,11 @@
 // ignore_for_file: avoid_print, file_names, unused_local_variable, duplicate_ignore, unnecessary_brace_in_string_interps, use_build_context_synchronously, prefer_const_constructors, unnecessary_null_comparison
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ioc_app_demo_1/db/login.dart';
 import 'package:ioc_app_demo_1/db/user.dart';
+import 'package:ioc_app_demo_1/page/homePage.dart';
 import 'package:ioc_app_demo_1/page/signupGmailPage.dart';
 import 'package:ioc_app_demo_1/page/signupPage.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +21,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final CollectionReference _user =
-      FirebaseFirestore.instance.collection('users');
+  // final CollectionReference _user =
+  //     FirebaseFirestore.instance.collection('users');
 
   final bool _isObscured = true;
 
@@ -148,13 +149,13 @@ class _LoginPageState extends State<LoginPage> {
                         userData?['isblock'],
                         userData?['ismanager']);
                     // print(context.read<Auth_Provider>().userid);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => Home(data: user.uid),
-                    //     // builder: (context) => MyTest(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Home(),
+                        // builder: (context) => MyTest(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Login',
@@ -164,9 +165,26 @@ class _LoginPageState extends State<LoginPage> {
                 GestureDetector(
                   onTap: () async {
                     User? user = await login().loginWithGmailAccount();
-                    List<String> listUser =
-                        await login().getDataFromFirestoreByUserID();
-                    if (listUser.contains(user?.uid)) {
+                    Map<String, dynamic>? userData =
+                        await getUserById(user!.uid);
+                    print(userData?['isblock']);
+                    if (userData != null) {
+                      context.read<Auth_Provider>().setCredentials(
+                          userData['userid'],
+                          userData['fullname'],
+                          userData['gmail'],
+                          userData['birth'],
+                          userData['phonenumber'],
+                          userData['room'],
+                          userData['isblock'],
+                          userData['ismanager']);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Home(),
+                          // builder: (context) => MyTest(),
+                        ),
+                      );
                     } else {
                       Navigator.push(
                         context,
