@@ -3,6 +3,7 @@
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:ioc_app_demo_1/db/user.dart';
 
 class Auth_Provider with ChangeNotifier {
   String? _gmail;
@@ -46,5 +47,19 @@ class Auth_Provider with ChangeNotifier {
     _active = null;
     _admin = null;
     notifyListeners();
+  }
+
+  void loadUser() {
+    Map<String, dynamic>? userData =
+        getUserById(_userid!) as Map<String, dynamic>?;
+    setCredentials(
+        userData?['userid'],
+        userData?['fullname'],
+        userData?['gmail'],
+        userData?['birth'],
+        userData?['phonenumber'],
+        userData?['room'],
+        userData?['isblock'],
+        userData?['ismanager']);
   }
 }

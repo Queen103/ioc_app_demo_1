@@ -3,6 +3,7 @@
 import 'package:ioc_app_demo_1/page/testPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ioc_app_demo_1/page/userProfilePage.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  final List<Widget> _page = [const Page1(), const Page2(), const Page3()];
+  final List<Widget> _page = [const Page1(), const Page2(), UserProfilePage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
