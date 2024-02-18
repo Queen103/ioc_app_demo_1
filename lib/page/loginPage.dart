@@ -136,10 +136,11 @@ class _LoginPageState extends State<LoginPage> {
                     // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
                     User? user = await login()
                         .signInWithEmailAndPassword(context, email, password);
-                    print(user!.uid);
-                    Map<String, dynamic>? userData =
+                    if(user != null){
+                      // print(user!.uid);
+                      Map<String, dynamic>? userData =
                         await getUserById(user.uid);
-                    context.read<Auth_Provider>().setCredentials(
+                        context.read<Auth_Provider>().setCredentials(
                         userData?['userid'],
                         userData?['fullname'],
                         userData?['gmail'],
@@ -148,14 +149,16 @@ class _LoginPageState extends State<LoginPage> {
                         userData?['room'],
                         userData?['isblock'],
                         userData?['ismanager']);
-                    // print(context.read<Auth_Provider>().userid);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Home(),
-                        // builder: (context) => MyTest(),
-                      ),
-                    );
+                      // print(context.read<Auth_Provider>().userid);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Home(),
+                          // builder: (context) => MyTest(),
+                        ),
+                      );
+                    }
+                    
                   },
                   child: const Text(
                     'Login',
