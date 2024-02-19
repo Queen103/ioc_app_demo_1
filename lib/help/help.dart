@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 void showSnackbar(BuildContext context, String message) {

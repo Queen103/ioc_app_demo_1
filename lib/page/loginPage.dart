@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.mail_outline_outlined),
-                    hintText: 'Gmail',
+                    labelText: 'Gmail',
                     labelStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                     // Màu sắc của nhãn
                     enabledBorder: OutlineInputBorder(
@@ -136,19 +136,19 @@ class _LoginPageState extends State<LoginPage> {
                     // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
                     User? user = await login()
                         .signInWithEmailAndPassword(context, email, password);
-                    if(user != null){
+                    if (user != null) {
                       // print(user!.uid);
                       Map<String, dynamic>? userData =
-                        await getUserById(user.uid);
-                        context.read<Auth_Provider>().setCredentials(
-                        userData?['userid'],
-                        userData?['fullname'],
-                        userData?['gmail'],
-                        userData?['birth'],
-                        userData?['phonenumber'],
-                        userData?['room'],
-                        userData?['isblock'],
-                        userData?['ismanager']);
+                          await getUserById(user.uid);
+                      context.read<Auth_Provider>().setCredentials(
+                          userData?['userid'],
+                          userData?['fullname'],
+                          userData?['gmail'],
+                          userData?['birth'],
+                          userData?['phonenumber'],
+                          userData?['room'],
+                          userData?['isblock'],
+                          userData?['ismanager']);
                       // print(context.read<Auth_Provider>().userid);
                       Navigator.push(
                         context,
@@ -158,7 +158,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     }
-                    
                   },
                   child: const Text(
                     'Login',

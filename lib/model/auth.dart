@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, camel_case_types
 
 // import 'dart:ffi';
 
@@ -49,9 +49,8 @@ class Auth_Provider with ChangeNotifier {
     notifyListeners();
   }
 
-  void loadUser() {
-    Map<String, dynamic>? userData =
-        getUserById(_userid!) as Map<String, dynamic>?;
+  Future<void> loadUser() async {
+    Map<String, dynamic>? userData = await getUserById(_userid!);
     setCredentials(
         userData?['userid'],
         userData?['fullname'],
@@ -61,5 +60,6 @@ class Auth_Provider with ChangeNotifier {
         userData?['room'],
         userData?['isblock'],
         userData?['ismanager']);
+    notifyListeners();
   }
 }
