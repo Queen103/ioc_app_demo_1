@@ -1,6 +1,7 @@
-// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, avoid_unnecessary_containers, prefer_const_constructors, deprecated_member_use, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
+// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, avoid_unnecessary_containers, prefer_const_constructors, deprecated_member_use, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
 
 import 'package:intl/intl.dart';
+import 'package:ioc_app_demo_1/db/user.dart';
 import 'package:ioc_app_demo_1/model/auth.dart';
 import 'package:ioc_app_demo_1/page/loginPage.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     onPressed: () {
                       _showModalBottomSheet(
                           context,
+                          '${context.read<Auth_Provider>().userid}',
                           '${context.read<Auth_Provider>().fullname}',
                           '${context.read<Auth_Provider>().phonenumber}',
                           '${context.read<Auth_Provider>().birth}');
@@ -150,8 +152,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 }
 
-void _showModalBottomSheet(
-    BuildContext context, String fullname, String phone, String birth) {
+void _showModalBottomSheet(BuildContext context, String userid, String fullname,
+    String phone, String birth) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
@@ -217,6 +219,18 @@ void _showModalBottomSheet(
                     onPrimary: Colors.white, // Màu chữ của nút
                   ),
                   onPressed: () {
+                    String newName = (_fullnameController.text.isNotEmpty
+                        ? _fullnameController.text
+                        : fullname);
+                    String newPhone = _phoneController.text.isNotEmpty
+                        ? _phoneController.text
+                        : phone;
+                    String newBirth = (_birthController.text.isNotEmpty
+                        ? _birthController.text
+                        : birth);
+                    updateData(userid, newName, newPhone, newBirth);
+                    context.read<Auth_Provider>().loadUser();
+                    
                     Navigator.pop(context);
                   },
                   child: Text('Update'),

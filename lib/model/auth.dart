@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, camel_case_types
+// ignore_for_file: unused_import; camel_case_types, prefer_interpolation_to_compose_strings, avoid_print
 
 // import 'dart:ffi';
 
@@ -51,15 +51,18 @@ class Auth_Provider with ChangeNotifier {
 
   Future<void> loadUser() async {
     Map<String, dynamic>? userData = await getUserById(_userid!);
-    setCredentials(
-        userData?['userid'],
-        userData?['fullname'],
-        userData?['gmail'],
-        userData?['birth'],
-        userData?['phonenumber'],
-        userData?['room'],
-        userData?['isblock'],
-        userData?['ismanager']);
+
+    _userid = userData?['userid'];
+    _fullname = userData?['fullname'];
+    _gmail = userData?['gmail'];
+    _birth = userData?['birth'];
+    _phonenumber = userData?['phonenumber'];
+    _room = userData?['room'];
+    _active = userData?['isblock'];
+    _admin = userData?['ismanager'];
+    print("Reload dữ liệu thành công");
     notifyListeners();
   }
 }
+
+void display() {}
