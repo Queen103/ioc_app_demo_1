@@ -12,7 +12,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  final List<Widget> _page = [const Page1(), const Page2(), UserProfilePage()];
+  final List<Widget> _page = [
+    Page3(),
+    const ImageListFromStorage(),
+    UserProfilePage()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
