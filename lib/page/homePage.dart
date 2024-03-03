@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_import, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, must_be_immutable, library_private_types_in_public_api, no_logic_in_create_state, unused_field, unused_import
 
+import 'package:ioc_app_demo_1/page/historyPage.dart';
 import 'package:ioc_app_demo_1/page/requirementPage.dart';
 import 'package:ioc_app_demo_1/page/testPage.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> _page = [
     RequirementPage(),
-    FirestoreListPage(),
+    HistoryPage(),
     UserProfilePage()
   ];
   @override
