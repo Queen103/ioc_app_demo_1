@@ -12,11 +12,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  final List<Widget> _page = [
-    Page3(),
-    const ImageListFromStorage(),
-    UserProfilePage()
-  ];
+  final List<Widget> _page = [Page3(), FirestoreListPage(), UserProfilePage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

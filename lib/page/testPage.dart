@@ -38,22 +38,45 @@ class Page2 extends StatelessWidget {
 }
 
 class Page3 extends StatelessWidget {
-  final ref = FirebaseStorage.instance
-      .refFromURL('gs://my-ioc-app-demo.appspot.com')
-      .child('images')
-      .child('hihi.jpg');
-  // final image = ref.child('/images');
-  // final networkurl = image.child('hihi.jpg');
-  final networkurl =
-      'https://firebasestorage.googleapis.com/v0/b/my-ioc-app-demo.appspot.com/o/images%2Fimage.jpg?alt=media&token=2ec3e3cc-8a20-4631-8d58-2065dfb8e5c8';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Page 3'),
-      ),
-      body: Center(
-        child: Image.network(networkurl),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                // Điều gì đó khi nút được nhấn
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red, // Màu đỏ
+              ),
+              child: Text('Nhấn vào đây'),
+            ),
+          ),
+          SizedBox(height: 20), // Khoảng cách giữa nút và danh sách
+
+          // Danh sách các Card
+          CardItem(
+            image:
+                'https://firebasestorage.googleapis.com/v0/b/my-ioc-app-demo.appspot.com/o/images%2F1.jpg?alt=media',
+            name: 'Người dùng 1',
+            time: '2 giờ trước',
+          ),
+          CardItem(
+            image:
+                'https://firebasestorage.googleapis.com/v0/b/my-ioc-app-demo.appspot.com/o/images%2F2.jpg?alt=media',
+            name: 'Người dùng 2',
+            time: '5 giờ trước',
+          ),
+          CardItem(
+            image:
+                'https://firebasestorage.googleapis.com/v0/b/my-ioc-app-demo.appspot.com/o/images%2F3.jpg?alt=media',
+            name: 'Người dùng 2',
+            time: '5 giờ trước',
+          ),
+        ],
       ),
     );
   }
@@ -123,4 +146,110 @@ Future<String> getImages() {
   final result = ref.getDownloadURL();
 
   return result;
+}
+
+class CardItem extends StatelessWidget {
+  final String image;
+  final String name;
+  final String time;
+
+  const CardItem({
+    Key? key,
+    required this.image,
+    required this.name,
+    required this.time,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(image),
+        ),
+        title: Text(name),
+        subtitle: Text(time),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // Xử lý khi nút thứ nhất được nhấn
+              },
+              child: Text('Nút 1'),
+            ),
+            SizedBox(width: 8), // Khoảng cách giữa hai nút
+            ElevatedButton(
+              onPressed: () {
+                // Xử lý khi nút thứ hai được nhấn
+              },
+              child: Text('Nút 2'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FirestoreListPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('history').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+
+          return ListView(
+            children: snapshot.data!.docs.map((document) {
+              final data = document.data() as Map<String, dynamic>;
+
+              return Card(
+                child: ListTile(
+                  onTap: () {
+                    _showModalBottomSheet(context, data);
+                  },
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(data['url']),
+                  ),
+                  title: Text(data['userid']),
+                  subtitle: Text(data['date']),
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context, Map<String, dynamic> data) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network(
+                data['url'],
+                height: 300,
+                width: 400,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(height: 16),
+              Text('UserID: ${data['userid']}'),
+              SizedBox(height: 8),
+              Text('Ngày: ${data['date']}'),
+              // Thêm thông tin chi tiết khác tùy thuộc vào dữ liệu của bạn
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
