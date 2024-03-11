@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ioc_app_demo_1/db/login.dart';
 import 'package:ioc_app_demo_1/db/user.dart';
+import 'package:ioc_app_demo_1/page/errorPage.dart';
 import 'package:ioc_app_demo_1/page/homePage.dart';
 import 'package:ioc_app_demo_1/page/signupGmailPage.dart';
 import 'package:ioc_app_demo_1/page/signupPage.dart';
@@ -166,43 +167,51 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    User? user = await login().loginWithGmailAccount();
-                    Map<String, dynamic>? userData =
-                        await getUserById(user!.uid);
-                    print(userData?['isblock']);
-                    if (userData != null) {
-                      context.read<Auth_Provider>().setCredentials(
-                          userData['userid'],
-                          userData['fullname'],
-                          userData['gmail'],
-                          userData['birth'],
-                          userData['phonenumber'],
-                          userData['room'],
-                          userData['isblock'],
-                          userData['ismanager']);
+                    try {
+                      User? user = await login().loginWithGmailAccount();
+                      Map<String, dynamic>? userData =
+                          await getUserById(user!.uid);
+                      print(userData?['isblock']);
+                      if (userData != null) {
+                        context.read<Auth_Provider>().setCredentials(
+                            userData['userid'],
+                            userData['fullname'],
+                            userData['gmail'],
+                            userData['birth'],
+                            userData['phonenumber'],
+                            userData['room'],
+                            userData['isblock'],
+                            userData['ismanager']);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(),
+                            // builder: (context) => MyTest(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpGmail(),
+                          ),
+                        );
+                      }
+                      if (user != null) {
+                        print(user);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => Home(data: user.uid),
+                        //   ),
+                        // );
+                      }
+                    } catch (e) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Home(),
-                          // builder: (context) => MyTest(),
-                        ),
+                            builder: (BuildContext context) => ErrorPage()),
                       );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpGmail(),
-                        ),
-                      );
-                    }
-                    if (user != null) {
-                      print(user);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => Home(data: user.uid),
-                      //   ),
-                      // );
                     }
                   },
                   child: Image.asset('assets/googlemail.png',
