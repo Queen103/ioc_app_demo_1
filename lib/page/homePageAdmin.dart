@@ -41,6 +41,8 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ],
         currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 0, 0, 0), // Màu của ô được chọn
+        unselectedItemColor: Colors.grey, // Màu của các ô không được chọn
         onTap: _onItemTapped,
       ),
     );

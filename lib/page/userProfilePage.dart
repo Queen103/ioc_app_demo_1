@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, avoid_unnecessary_containers, prefer_const_constructors, deprecated_member_use, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
+// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, avoid_unnecessary_containers, prefer_const_constructors, deprecated_member_use, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, prefer_const_literals_to_create_immutables
 
 import 'package:intl/intl.dart';
 import 'package:ioc_app_demo_1/db/user.dart';
@@ -24,11 +24,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
         //   borderRadius: BorderRadius.circular(10.0), // Đặt bán kính bo góc
         // ),
         child: Container(
-          width: 300,
-          height: 500,
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 255, 255, 255),
-            borderRadius: BorderRadius.circular(20), // Đặt độ cong của góc
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(
+                    209, 248, 15, 209), // Màu đầu tiên trong gradient
+                Color.fromARGB(255, 15, 223, 238), // Màu thứ hai trong gradient
+              ],
+              begin: Alignment.topCenter, // Điểm bắt đầu của gradient
+              end: Alignment.bottomCenter, // Điểm kết thúc của gradient
+              stops: [0.0, 1.0], // Điểm dừng của gradient
+              tileMode: TileMode.clamp, // Chế độ lặp lại của gradient
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,7 +45,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               Text(
                 'User Profile',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 30.0,
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,
                   color: const Color.fromARGB(255, 0, 0, 0),
@@ -230,7 +237,7 @@ void _showModalBottomSheet(BuildContext context, String userid, String fullname,
                         : birth);
                     updateData(userid, newName, newPhone, newBirth);
                     context.read<Auth_Provider>().loadUser();
-                    
+
                     Navigator.pop(context);
                   },
                   child: Text('Update'),

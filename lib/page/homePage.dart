@@ -19,6 +19,7 @@ class _HomeState extends State<Home> {
     HistoryPage(),
     UserProfilePage()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +36,12 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.portrait_sharp),
-            label: 'Porfile',
+            label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 0, 0, 0), // Màu của ô được chọn
+        unselectedItemColor: Colors.grey, // Màu của các ô không được chọn
         onTap: _onItemTapped,
       ),
     );

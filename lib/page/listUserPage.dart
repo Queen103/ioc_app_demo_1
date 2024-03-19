@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,51 +7,81 @@ class UserListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(209, 31, 226, 252), // Đặt màu nền
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('users').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          centerTitle: true, // Đặt title ở giữa
+          title: Text(
+            'LIST OF USER',
+            style: TextStyle(
+              fontWeight: FontWeight.bold, // Đặt chữ in đậm
+            ),
+          ),
+        ),
+        backgroundColor: Color.fromARGB(209, 248, 15, 209), // Đặt màu nền
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(
+                    209, 248, 15, 209), // Màu đầu tiên trong gradient
+                Color.fromARGB(255, 15, 223, 238), // Màu thứ hai trong gradient
+              ],
+              begin: Alignment.topCenter, // Điểm bắt đầu của gradient
+              end: Alignment.bottomCenter, // Điểm kết thúc của gradient
+              stops: [0.0, 1.0], // Điểm dừng của gradient
+              tileMode: TileMode.clamp, // Chế độ lặp lại của gradient
+            ),
+          ),
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .where('ismanager', isEqualTo: false)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-          List<DocumentSnapshot> users = snapshot.data!.docs;
+              List<DocumentSnapshot> users = snapshot.data!.docs;
 
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              String fullname = users[index]['fullname'];
-              String room = users[index]['room'];
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  String fullname = users[index]['fullname'];
+                  String room = users[index]['room'];
 
-              return Card(
-                color: Colors.white, // Đặt màu nền của thẻ là trắng
-                child: ListTile(
-                  title: Text(
-                    fullname,
-                    style: TextStyle(color: Colors.black87), // Màu chữ đen
-                  ),
-                  subtitle: Text(
-                    'Room: $room',
-                    style: TextStyle(color: Colors.black54), // Màu chữ xám đậm
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            UserDetailsScreen(user: users[index]),
+                  return Card(
+                    color: Colors.white, // Đặt màu nền của thẻ là trắng
+                    child: ListTile(
+                      title: Text(
+                        fullname,
+                        style: TextStyle(color: Colors.black87), // Màu chữ đen
                       ),
-                    );
-                  },
-                ),
+                      subtitle: Text(
+                        'Room: $room',
+                        style:
+                            TextStyle(color: Colors.black54), // Màu chữ xám đậm
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UserDetailsScreen(user: users[index]),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
-    );
+          ),
+        ));
   }
 }
 
@@ -81,11 +111,11 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       'isblock': _isBlock,
     }).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Update Thành công')),
+        SnackBar(content: Text('Update Success')),
       );
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Update thất bại: $error')),
+        SnackBar(content: Text('Update Fail: $error')),
       );
     });
   }
@@ -100,17 +130,35 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Details'),
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+        centerTitle: true, // Đặt title ở giữa
+        title: Text(
+          'Information',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Đặt chữ in đậm
+          ),
+        ),
       ),
+      backgroundColor: Color.fromARGB(209, 248, 15, 209), // Đặt màu nền
       body: Container(
         padding: EdgeInsets.all(20.0),
-        color: Color.fromARGB(
-            209, 31, 226, 252), // Đặt màu nền của màn hình là xanh nước
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(209, 248, 15, 209), // Màu đầu tiên trong gradient
+              Color.fromARGB(255, 15, 223, 238), // Màu thứ hai trong gradient
+            ],
+            begin: Alignment.topCenter, // Điểm bắt đầu của gradient
+            end: Alignment.bottomCenter, // Điểm kết thúc của gradient
+            stops: [0.0, 1.0], // Điểm dừng của gradient
+            tileMode: TileMode.clamp, // Chế độ lặp lại của gradient
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Fullname:',
+              'Fullname :',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -127,7 +175,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Birth:',
+              'Birth date:',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -144,7 +192,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Gmail:',
+              'Gmail :',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -161,7 +209,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Phone Number:',
+              'Phonenumber :',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -178,7 +226,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Room:',
+              'Room :',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -196,7 +244,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Face ID:',
+              'Face ID :',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -213,7 +261,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Blocked:',
+              'Blocked :',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
