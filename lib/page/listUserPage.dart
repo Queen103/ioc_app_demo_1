@@ -1,13 +1,13 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ioc_app_demo_1/page/errorPage.dart';
 
 class UserListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(209, 31, 226, 252), // Đặt màu nền
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -25,24 +25,27 @@ class UserListScreen extends StatelessWidget {
               String fullname = users[index]['fullname'];
               String room = users[index]['room'];
 
-              return ListTile(
-                title: Text(
-                  fullname,
-                  style: TextStyle(color: Colors.black87), // Màu chữ đen
+              return Card(
+                color: Colors.white, // Đặt màu nền của thẻ là trắng
+                child: ListTile(
+                  title: Text(
+                    fullname,
+                    style: TextStyle(color: Colors.black87), // Màu chữ đen
+                  ),
+                  subtitle: Text(
+                    'Room: $room',
+                    style: TextStyle(color: Colors.black54), // Màu chữ xám đậm
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            UserDetailsScreen(user: users[index]),
+                      ),
+                    );
+                  },
                 ),
-                subtitle: Text(
-                  'Room: $room',
-                  style: TextStyle(color: Colors.black54), // Màu chữ xám đậm
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          UserDetailsScreen(user: users[index]),
-                    ),
-                  );
-                },
               );
             },
           );
@@ -101,6 +104,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       ),
       body: Container(
         padding: EdgeInsets.all(20.0),
+        color: Color.fromARGB(
+            209, 31, 226, 252), // Đặt màu nền của màn hình là xanh nước
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -109,7 +114,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white, // Màu chữ trắng
               ),
             ),
             SizedBox(height: 5.0),
@@ -126,7 +131,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 5.0),
@@ -143,7 +148,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 5.0),
@@ -160,7 +165,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 5.0),
@@ -177,7 +182,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 5.0),
@@ -195,7 +200,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 5.0),
@@ -212,7 +217,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.lightBlueAccent,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 5.0),

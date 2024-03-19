@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_import, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, must_be_immutable, library_private_types_in_public_api, no_logic_in_create_state, unused_field, unused_import
 
+import 'package:ioc_app_demo_1/page/historyAdmin.dart';
 import 'package:ioc_app_demo_1/page/historyPage.dart';
 import 'package:ioc_app_demo_1/page/listUserPage.dart';
 import 'package:ioc_app_demo_1/page/requirementPage.dart';
@@ -17,7 +18,7 @@ class _HomeAdminState extends State<HomeAdmin> {
   int _selectedIndex = 0;
   final List<Widget> _page = [
     UserListScreen(),
-    HistoryPage(),
+    HistoryAdminPage(),
     UserProfilePage()
   ];
   @override

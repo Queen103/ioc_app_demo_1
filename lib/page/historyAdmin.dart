@@ -1,18 +1,15 @@
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ioc_app_demo_1/model/auth.dart';
-import 'package:provider/provider.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(209, 31, 226, 252),
+      backgroundColor: Color.fromARGB(209, 31, 226, 252), // Đặt màu nền
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('history')
-            .where('room', isEqualTo: context.read<Auth_Provider>().room)
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('history').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
@@ -30,7 +27,7 @@ class HistoryPage extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(data['url']),
                   ),
-                  title: Text('Mở cửa bởi ' + data['fullname']),
+                  title: Text('Phòng số: ' + data['room']),
                   subtitle: Text(data['date']),
                 ),
               );
@@ -57,7 +54,7 @@ class HistoryPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 16),
-              Text('Full name: ${data['fullname']}'),
+              Text('Mở cửa bởi: ${data['fullname']}'),
               SizedBox(height: 8),
               Text('Ngày: ${data['date']}'),
               // Thêm thông tin chi tiết khác tùy thuộc vào dữ liệu của bạn
