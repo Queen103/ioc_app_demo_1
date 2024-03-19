@@ -1,9 +1,12 @@
 // ignore_for_file: avoid_print, unused_import, file_names, unused_local_variable, unnecessary_brace_in_string_interps, use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ioc_app_demo_1/help/help.dart';
+import 'package:ioc_app_demo_1/page/errorPage.dart';
 import 'package:ioc_app_demo_1/page/loginPage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -106,28 +109,43 @@ class _SignUpGmail extends State<SignUpGmail> {
                         .withOpacity(0.9), // Đặt màu nền của nút
                   ),
                   onPressed: () async {
-                    // Xử lý đăng nhập ở đây
-                    String phonenumber = _phonenumberController.text;
-                    String birth = _birthController.text;
-                    // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
-                    User? user = await login().loginWithGmailAccount();
-                    await _user.add({
-                      "userid": user?.uid,
-                      "isblock": false,
-                      "ismanager": false,
-                      "gmail": user?.email,
-                      "room": "0000",
-                      "birth": birth,
-                      "fullname": user?.displayName,
-                      "phonenumber": phonenumber
-                    });
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                      (route) => false,
-                    );
-                    showSnackbar(context, 'Vui lòng đăng nhập lại');
+                    try {
+                      // Xử lý đăng nhập ở đây
+                      String phonenumber = _phonenumberController.text;
+                      String birth = _birthController.text;
+                      // Tạo một đối tượng Random
+                      Random random = Random();
+
+                      // Tạo số ngẫu nhiên từ 0 đến 99
+                      String randomNumber = random.nextInt(100000).toString();
+
+                      // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
+                      User? user = await login().loginWithGmailAccount();
+                      await _user.add({
+                        "userid": user?.uid,
+                        "isblock": false,
+                        "ismanager": false,
+                        "gmail": user?.email,
+                        "room": "0000",
+                        "birth": birth,
+                        "fullname": user?.displayName,
+                        "phonenumber": phonenumber,
+                        "faceid": randomNumber,
+                      });
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                        (route) => false,
+                      );
+                      showSnackbar(context, 'Vui lòng đăng nhập lại');
+                    } catch (e) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => ErrorPage()),
+                      );
+                    }
                   },
                   child: const Text(
                     'Register',

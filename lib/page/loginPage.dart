@@ -5,8 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ioc_app_demo_1/db/login.dart';
 import 'package:ioc_app_demo_1/db/user.dart';
+import 'package:ioc_app_demo_1/help/help.dart';
 import 'package:ioc_app_demo_1/page/errorPage.dart';
 import 'package:ioc_app_demo_1/page/homePage.dart';
+import 'package:ioc_app_demo_1/page/homePageAdmin.dart';
 import 'package:ioc_app_demo_1/page/signupGmailPage.dart';
 import 'package:ioc_app_demo_1/page/signupPage.dart';
 import 'package:provider/provider.dart';
@@ -129,34 +131,54 @@ class _LoginPageState extends State<LoginPage> {
                         .withOpacity(0.9), // Đặt màu nền của nút
                   ),
                   onPressed: () async {
-                    // Xử lý đăng nhập ở đây
-                    // ignore: unused_local_variable
-                    String email = _emailController.text;
-                    // ignore: unused_local_variable
-                    String password = _passwordController.text;
-                    // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
-                    User? user = await login()
-                        .signInWithEmailAndPassword(context, email, password);
-                    if (user != null) {
-                      // print(user!.uid);
-                      Map<String, dynamic>? userData =
-                          await getUserById(user.uid);
-                      context.read<Auth_Provider>().setCredentials(
-                          userData?['userid'],
-                          userData?['fullname'],
-                          userData?['gmail'],
-                          userData?['birth'],
-                          userData?['phonenumber'],
-                          userData?['room'],
-                          userData?['isblock'],
-                          userData?['ismanager']);
-                      // print(context.read<Auth_Provider>().userid);
+                    try {
+                      // Xử lý đăng nhập ở đây
+                      // ignore: unused_local_variable
+                      String email = _emailController.text;
+                      // ignore: unused_local_variable
+                      String password = _passwordController.text;
+                      // Thực hiện xác thực, chuyển đến màn hình chính, v.v.
+                      User? user = await login()
+                          .signInWithEmailAndPassword(context, email, password);
+                      if (user != null) {
+                        // print(user!.uid);
+                        Map<String, dynamic>? userData =
+                            await getUserById(user.uid);
+                        context.read<Auth_Provider>().setCredentials(
+                            userData?['userid'],
+                            userData?['fullname'],
+                            userData?['gmail'],
+                            userData?['birth'],
+                            userData?['phonenumber'],
+                            userData?['room'],
+                            userData?['isblock'],
+                            userData?['ismanager'],
+                            userData?['faceid']);
+                        if (userData?['ismanager']) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeAdmin(),
+                              // builder: (context) => MyTest(),
+                            ),
+                          );
+                        } else if (!userData?['isblock']) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Home(),
+                              // builder: (context) => MyTest(),
+                            ),
+                          );
+                        } else {
+                          showSnackbar(context, 'Vui lòng kiểm tra lại');
+                        }
+                      }
+                    } catch (e) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Home(),
-                          // builder: (context) => MyTest(),
-                        ),
+                            builder: (BuildContext context) => ErrorPage()),
                       );
                     }
                   },
@@ -181,14 +203,27 @@ class _LoginPageState extends State<LoginPage> {
                             userData['phonenumber'],
                             userData['room'],
                             userData['isblock'],
-                            userData['ismanager']);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Home(),
-                            // builder: (context) => MyTest(),
-                          ),
-                        );
+                            userData['ismanager'],
+                            userData['faceid']);
+                        if (userData['ismanager']) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeAdmin(),
+                              // builder: (context) => MyTest(),
+                            ),
+                          );
+                        } else if (!userData['isblock']) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Home(),
+                              // builder: (context) => MyTest(),
+                            ),
+                          );
+                        } else {
+                          showSnackbar(context, 'Vui lòng kiểm tra lại');
+                        }
                       } else {
                         Navigator.push(
                           context,
@@ -196,15 +231,6 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => SignUpGmail(),
                           ),
                         );
-                      }
-                      if (user != null) {
-                        print(user);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => Home(data: user.uid),
-                        //   ),
-                        // );
                       }
                     } catch (e) {
                       Navigator.push(

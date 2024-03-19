@@ -12,6 +12,7 @@ class Auth_Provider with ChangeNotifier {
   String? _fullname;
   String? _birth;
   String? _room;
+  String? _faceid;
   bool? _active;
   bool? _admin;
 
@@ -21,11 +22,20 @@ class Auth_Provider with ChangeNotifier {
   String? get fullname => _fullname;
   String? get birth => _birth;
   String? get room => _room;
+  String? get faceid => _faceid;
   bool? get active => _active;
   bool? get admin => _admin;
 
-  void setCredentials(String userid, String fullname, String gmail,
-      String birth, String phonenumber, String room, bool active, bool admin) {
+  void setCredentials(
+      String userid,
+      String fullname,
+      String gmail,
+      String birth,
+      String phonenumber,
+      String room,
+      bool active,
+      bool admin,
+      String faceid) {
     _userid = userid;
     _fullname = fullname;
     _gmail = gmail;
@@ -34,6 +44,7 @@ class Auth_Provider with ChangeNotifier {
     _room = room;
     _active = active;
     _admin = admin;
+    _faceid = faceid;
     notifyListeners();
   }
 
@@ -46,6 +57,7 @@ class Auth_Provider with ChangeNotifier {
     _room = null;
     _active = null;
     _admin = null;
+    _faceid = null;
     notifyListeners();
   }
 
@@ -60,6 +72,7 @@ class Auth_Provider with ChangeNotifier {
     _room = userData?['room'];
     _active = userData?['isblock'];
     _admin = userData?['ismanager'];
+    _faceid = userData?['faceid'];
     print("Reload dữ liệu thành công");
     notifyListeners();
   }
