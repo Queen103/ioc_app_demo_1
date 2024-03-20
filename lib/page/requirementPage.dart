@@ -1,7 +1,9 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ioc_app_demo_1/model/auth.dart';
+import 'package:provider/provider.dart';
 
 class RequirementPage extends StatelessWidget {
   @override
@@ -100,7 +102,7 @@ class RequirementPage extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _handleAccept(data);
+                      _handleAccept(data, context);
                       Navigator.pop(
                           context); // Đóng BottomSheet sau khi xử lý sự kiện
                     },
@@ -109,7 +111,7 @@ class RequirementPage extends StatelessWidget {
                   SizedBox(width: 25),
                   ElevatedButton(
                     onPressed: () {
-                      _handleReject(data);
+                      _handleReject(data, context);
                       Navigator.pop(
                           context); // Đóng BottomSheet sau khi xử lý sự kiện
                     },
@@ -125,7 +127,7 @@ class RequirementPage extends StatelessWidget {
     );
   }
 
-  void _handleAccept(Map<String, dynamic> data) async {
+  void _handleAccept(Map<String, dynamic> data, BuildContext context) async {
     // Thực hiện truy vấn để lấy tài liệu với trường id = 12
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('requirement')
@@ -148,14 +150,25 @@ class RequirementPage extends StatelessWidget {
       }).catchError((error) {
         print('Failed to update open value: $error');
       });
+      FirebaseFirestore.instance
+          .collection(
+              'requirement') // Thay 'requirement' bằng tên collection của bạn
+          .doc(
+              documentId) // Sử dụng document ID để xác định tài liệu cần cập nhật
+          .update({
+        'faceid': context.read<Auth_Provider>().faceid.toString()
+      }).then((value) {
+        print('Update open value successfully');
+      }).catchError((error) {
+        print('Failed to update open value: $error');
+      });
     } else {
       print('No document found');
     }
     // hành động mở cửa
-
   }
 
-  void _handleReject(Map<String, dynamic> data) async {
+  void _handleReject(Map<String, dynamic> data, BuildContext context) async {
     // Thực hiện truy vấn để lấy tài liệu với trường id = 12
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('requirement')
@@ -173,7 +186,18 @@ class RequirementPage extends StatelessWidget {
               'requirement') // Thay 'requirement' bằng tên collection của bạn
           .doc(
               documentId) // Sử dụng document ID để xác định tài liệu cần cập nhật
-          .update({'open': '0'}).then((value) {
+          .update({'open': '2'}).then((value) {
+        print('Update open value successfully');
+      }).catchError((error) {
+        print('Failed to update open value: $error');
+      });
+      FirebaseFirestore.instance
+          .collection(
+              'requirement') // Thay 'requirement' bằng tên collection của bạn
+          .doc(
+              documentId) // Sử dụng document ID để xác định tài liệu cần cập nhật
+          .update({'faceid': context.read<Auth_Provider>().faceid}).then(
+              (value) {
         print('Update open value successfully');
       }).catchError((error) {
         print('Failed to update open value: $error');
